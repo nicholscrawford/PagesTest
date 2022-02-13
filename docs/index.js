@@ -1,6 +1,10 @@
 import {OrbitControls} from 'https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js'
 import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
 const canvas = document.querySelector('canvas.webgl')
+
+//Loader
+const loader = new GLTFLoader();
 
 // Scene
 const scene = new THREE.Scene()
@@ -16,13 +20,25 @@ const material = new THREE.MeshBasicMaterial({
 })
 const boxMesh = new THREE.Mesh(geometry,material)
 const sphereMesh = new THREE.Mesh(geometry2,material)
-scene.add(boxMesh)
+//scene.add(boxMesh)
 // scene.add(sphereMesh)
 boxMesh.position.x = 0
 boxMesh.position.y = 0.8
 sphereMesh.position.x = -1.6
 sphereMesh.position.y = 0.5
 geometry.center()
+
+//Add obj
+loader.load( 'GarbageMonitor.glb', function ( gltf ) {
+
+	scene.add( gltf.scene );
+
+}, undefined, function ( error ) {
+
+	console.error( error );
+
+} );
+
 // Sizes
 const sizes = {
     width:window.innerWidth,
@@ -68,7 +84,7 @@ const tick = () => {
     boxMesh.rotateY(30*0.0003)
     sphereMesh.rotateY(30*0.0003)
     // mesh.position.y = Math.sin(elapsedTime) *0.1
-    boxMesh.position.z = Math.sin(elapsedTime) * 1
+    // boxMesh.position.z = Math.sin(elapsedTime) * 1
 
     controls.update()
     controls.enableDamping = true
